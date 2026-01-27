@@ -18,7 +18,7 @@ const MedicalGoods = () => {
             />
           </div>
 
-          {/* Right Content */}
+          
           <div className="space-y-6">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
               Your faithful partners <br /> Medical Goods
