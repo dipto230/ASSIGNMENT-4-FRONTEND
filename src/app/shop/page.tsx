@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { getProducts } from "@/lib/api-client";
 
 const ShopPage = () => {
@@ -12,7 +13,13 @@ const ShopPage = () => {
     const fetchProducts = async () => {
       try {
         const data = await getProducts();
-        setProducts(data);
+
+   
+        const activeProducts = data.filter(
+          (p: any) => p.isApproved && p.isActive
+        );
+
+        setProducts(activeProducts);
       } catch (error) {
         console.error(error);
       } finally {
@@ -26,7 +33,6 @@ const ShopPage = () => {
   return (
     <section className="w-full bg-gray-50 min-h-screen py-20">
       <div className="max-w-7xl mx-auto px-6 lg:px-16">
-      
         <div className="mb-12 text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-3">
             Shop Medicines
@@ -37,64 +43,88 @@ const ShopPage = () => {
           </p>
         </div>
 
- 
         {loading && (
-          <p className="text-center text-gray-500">
-            Loading products...
-          </p>
+          <p className="text-center text-gray-500">Loading products...</p>
         )}
 
-    
-        {!loading && (
+        {!loading && products.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {products.map((product) => (
-              <div
-                key={product.id}
-                className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden"
-              >
-            
-                <div className="relative h-48 bg-gray-100 flex items-center justify-center">
-                  <Image
-                    src={
-                      product.image?.startsWith("http")
-                        ? product.image
-                        : `${process.env.NEXT_PUBLIC_API_URL}/${product.image}`
-                    }
-                    alt={product.name}
-                    fill
-                    className="object-contain p-4"
-                  />
-                </div>
+            {products.map((product) => {
+              const imageSrc =
+                product.image && product.image.startsWith("http")
+                  ? product.image
+                                   : product.image
+                  ? `${process.env.NEXT_PUBLIC_API_URL}/${product.image}`
+                  : "/placeholder-medicine.png";
 
-          
-                <div className="p-4 flex flex-col flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1 line-clamp-1">
-                    {product.name}
-                  </h3>
+              const avgRating =
+                product.reviews?.length > 0
+                  ? (
+                      product.reviews.reduce(
+                        (a: number, r: any) => a + r.rating,
+                        0
+                      ) / product.reviews.length
+                    ).toFixed(1)
+                  : null;
 
-                  <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                    {product.description}
-                  </p>
+              return (
+                <Link href={`/shop/${product.id}`} key={product.id}>
+                  <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden cursor-pointer">
+                    <div className="relative h-48 bg-gray-100 flex items-center justify-center">
+                      <Image
+                        src={imageSrc}
+                        alt={product.name}
+                        fill
+                        unoptimized   
+                        className="object-contain p-4"
+                      />
+                    </div>
 
-                  <p className="text-green-600 font-bold text-lg mb-4">
-                    ₹{product.price}
-                  </p>
+                    <div className="p-4 flex flex-col flex-1">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-1 line-clamp-1">
+                        {product.name}
+                      </h3>
 
-                  <div className="mt-auto flex gap-2">
-                    <button className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-                      Add to Cart
-                    </button>
-                    <button className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
-                      Buy Now
-                    </button>
+                      <p className="text-sm text-gray-600 mb-2 line-clamp-2">
+                        {product.description}
+                      </p>
+
+                      {avgRating && (
+                        <p className="text-yellow-500 text-sm mb-1">
+                          ⭐ {avgRating}
+                        </p>
+                      )}
+
+                      <p
+                        className={`text-sm mb-2 ${
+                          product.stock > 0
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }`}
+                      >
+                        {product.stock > 0 ? "In Stock" : "Out of Stock"}
+                      </p>
+
+                      <p className="text-green-600 font-bold text-lg mb-4">
+                        ₹{Number(product.price).toFixed(2)}
+                      </p>
+
+                      <div className="mt-auto flex gap-2">
+                        <button className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+                          Add to Cart
+                        </button>
+                        <button className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
+                          Buy Now
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         )}
 
-      
         {!loading && products.length === 0 && (
           <p className="text-center text-gray-500 mt-20">
             No products available at the moment.
