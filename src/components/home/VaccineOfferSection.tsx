@@ -49,7 +49,7 @@ export default function VaccineOfferSection() {
     <section className="w-full bg-gradient-to-b from-gray-50 to-white py-16 lg:py-24">
       <div className="max-w-7xl mx-auto px-6 lg:px-16 grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
         
-        {/* LEFT SIDE */}
+       
         <div>
           <p className="text-teal-600 font-semibold mb-4">
             Todays Hot Offer
@@ -64,7 +64,7 @@ export default function VaccineOfferSection() {
             bono fruitur id est voluptate barbarorum.
           </p>
 
-          {/* ⏳ LIVE COUNTDOWN */}
+       
           <div className="flex gap-6 mb-10">
             {[
               { label: "Days", value: timeLeft.days },
@@ -81,7 +81,7 @@ export default function VaccineOfferSection() {
             ))}
           </div>
 
-          {/* Buttons */}
+        
           <div className="flex items-center gap-6">
             <Link href="/booking">
               <button className="bg-teal-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-teal-700 transition">

@@ -2,8 +2,14 @@
 
 import Link from "next/link";
 import { Search, User, ShoppingCart, HeartPulse } from "lucide-react";
+import { useState } from "react";
+import { useSession } from "@/features/auth/useSession";
+import { logout } from "@/features/auth/logout";
 
 export default function Navbar() {
+  const { user } = useSession();
+  const [open, setOpen] = useState(false);
+
   return (
     <header className="w-full bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
       
@@ -26,19 +32,13 @@ export default function Navbar() {
         </div>
       </div>
 
-
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         
-   
-        <Link
-          href="/"
-          className="flex items-center gap-2 text-2xl font-bold text-teal-600"
-        >
+        <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-teal-600">
           <HeartPulse size={32} />
           MediStore
         </Link>
 
-   
         <nav className="hidden md:flex gap-8 font-medium text-gray-700">
           <Link href="/" className="hover:text-teal-600 transition">Home</Link>
           <Link href="#" className="hover:text-teal-600 transition">About</Link>
@@ -48,10 +48,43 @@ export default function Navbar() {
           <Link href="#" className="hover:text-teal-600 transition">Contact</Link>
         </nav>
 
-      
-        <div className="flex items-center gap-6 text-gray-700">
+        <div className="flex items-center gap-6 text-gray-700 relative">
           <Search className="cursor-pointer hover:text-teal-600 transition" />
-          <User className="cursor-pointer hover:text-teal-600 transition" />
+
+          {/* USER ICON */}
+          <div
+            className="cursor-pointer hover:text-teal-600 transition relative"
+            onClick={() => setOpen(!open)}
+          >
+            <User />
+
+            {open && (
+              <div className="absolute right-0 mt-3 w-40 bg-white shadow-lg rounded-md p-2 text-sm z-50">
+
+                {/* NOT LOGGED IN */}
+                {!user && (
+                  <>
+                    <Link href="/login" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      Login
+                    </Link>
+                    <Link href="/register" className="block px-3 py-2 hover:bg-gray-100 rounded">
+                      Register
+                    </Link>
+                  </>
+                )}
+
+                {/* LOGGED IN → ONLY LOGOUT */}
+                {user && (
+                  <button
+                    onClick={logout}
+                    className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-red-500"
+                  >
+                    Logout
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
 
           <div className="relative cursor-pointer hover:text-teal-600 transition">
             <ShoppingCart />
