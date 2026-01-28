@@ -84,7 +84,7 @@ export default function LoginPage() {
         </form>
       </div>
 
-      {/* RIGHT SIDE - Image */}
+    
       <div className="hidden md:block md:w-1/2">
         <img
           src="/surgeon.jpg"

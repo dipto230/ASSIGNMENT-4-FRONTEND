@@ -109,10 +109,18 @@ export default function Navbar() {
             className="cursor-pointer hover:text-teal-600 transition relative"
             onClick={() => setOpen(!open)}
           >
-            <User />
+            {user?.image ? (
+              <img
+                src={user.image}
+                alt="avatar"
+                className="w-6 h-6 rounded-full"
+              />
+            ) : (
+              <User />
+            )}
 
             {open && (
-              <div className="absolute right-0 mt-3 w-40 bg-white shadow-lg rounded-md p-2 text-sm z-50">
+              <div className="absolute right-0 mt-3 w-48 bg-white shadow-lg rounded-md p-2 text-sm z-50">
                 {!user && (
                   <>
                     <Link
@@ -131,12 +139,46 @@ export default function Navbar() {
                 )}
 
                 {user && (
-                  <button
-                    onClick={() => handleLogout(setUser, router)}
-                    className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-red-500"
-                  >
-                    Logout
-                  </button>
+                  <>
+                    {/* Profile Info */}
+                    <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-200">
+                      {user.image ? (
+                        <img
+                          src={user.image}
+                          className="w-8 h-8 rounded-full"
+                          alt="avatar"
+                        />
+                      ) : (
+                        <User className="w-8 h-8" />
+                      )}
+                      <div>
+                        <div className="font-semibold">{user.name}</div>
+                        <div className="text-xs text-gray-500">{user.email}</div>
+                      </div>
+                    </div>
+
+                    {/* Links */}
+                    <Link
+                      href="/profile"
+                      className="block px-3 py-2 hover:bg-gray-100 rounded"
+                    >
+                      My Profile
+                    </Link>
+                    <Link
+                      href="/orders"
+                      className="block px-3 py-2 hover:bg-gray-100 rounded"
+                    >
+                      My Orders
+                    </Link>
+
+                    {/* Logout */}
+                    <button
+                      onClick={() => handleLogout(setUser, router)}
+                      className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-red-500"
+                    >
+                      Logout
+                    </button>
+                  </>
                 )}
               </div>
             )}
