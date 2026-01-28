@@ -32,7 +32,7 @@ export async function getProducts() {
 
 
 
-// ➕ Add to Cart
+
 export async function addToCart(medicineId: string, quantity = 1) {
   const res = await fetch(`${API_BASE}/api/customer/cart`, {
     method: "POST",
@@ -45,7 +45,7 @@ export async function addToCart(medicineId: string, quantity = 1) {
   return res.json();
 }
 
-// 🛒 Get Cart
+
 export async function getCart() {
   const res = await fetch(`${API_BASE}/api/customer/cart`, {
     credentials: "include",
@@ -55,7 +55,7 @@ export async function getCart() {
   return res.json();
 }
 
-// 🔄 Update Quantity
+
 export async function updateCartItem(id: string, quantity: number) {
   const res = await fetch(`${API_BASE}/api/customer/cart/${id}`, {
     method: "PATCH",
@@ -67,7 +67,7 @@ export async function updateCartItem(id: string, quantity: number) {
   if (!res.ok) throw new Error("Failed to update cart item");
 }
 
-// ❌ Remove Item
+
 export async function removeCartItem(id: string) {
   const res = await fetch(`${API_BASE}/api/customer/cart/${id}`, {
     method: "DELETE",
@@ -77,7 +77,7 @@ export async function removeCartItem(id: string) {
   if (!res.ok) throw new Error("Failed to remove cart item");
 }
 
-/* ================= ORDER ================= */
+
 
 export async function placeOrder(shipping: {
   name: string;
@@ -101,4 +101,27 @@ export async function placeOrder(shipping: {
   return res.json();
 }
 
+
+
+
+export async function getOrders() {
+  const res = await fetch(`${API_BASE}/api/customer/orders`, {
+    credentials: "include",
+    cache: "no-store",
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch orders");
+  return res.json();
+}
+
+
+export async function getOrderById(orderId: string) {
+  const res = await fetch(`${API_BASE}/api/customer/orders/${orderId}`, {
+    credentials: "include",
+    cache: "no-store",
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch order");
+  return res.json();
+}
 
