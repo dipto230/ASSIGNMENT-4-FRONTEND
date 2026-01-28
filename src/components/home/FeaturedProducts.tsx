@@ -3,9 +3,11 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getProducts } from "../../lib/api-client";
+import { getProducts, addToCart } from "@/lib/api-client";
+import { useSession } from "@/hooks/useSession";
 
 const FeaturedProducts = () => {
+  const { user, loading: sessionLoading } = useSession(); // Get current user
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -14,7 +16,7 @@ const FeaturedProducts = () => {
       try {
         const data = await getProducts();
 
-        // ✅ Only approved & active medicines
+        // Only show approved and active products
         const activeProducts = data.filter(
           (p: any) => p.isApproved && p.isActive
         );
@@ -38,6 +40,24 @@ const FeaturedProducts = () => {
     );
 
   const featured = products.slice(0, 4);
+
+  // Add to cart handler
+  const handleAddToCart = async (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+
+    if (!user) {
+      alert("Please login first to add products to cart");
+      return;
+    }
+
+    try {
+      await addToCart(id);
+      alert("Added to cart 🛒");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to add to cart");
+    }
+  };
 
   return (
     <section className="w-full bg-gray-50 py-20">
@@ -68,17 +88,18 @@ const FeaturedProducts = () => {
             return (
               <Link href={`/shop/${product.id}`} key={product.id}>
                 <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden cursor-pointer">
-                
+                  {/* Product Image */}
                   <div className="relative h-48 bg-gray-100 flex items-center justify-center">
                     <Image
                       src={imageSrc}
                       alt={product.name}
                       fill
-                      unoptimized   
+                      unoptimized
                       className="object-contain p-4"
                     />
                   </div>
 
+                  {/* Product Details */}
                   <div className="p-4 flex flex-col flex-1">
                     <h3 className="text-lg font-semibold text-gray-900 mb-1 line-clamp-1">
                       {product.name}
@@ -96,9 +117,7 @@ const FeaturedProducts = () => {
 
                     <p
                       className={`text-sm mb-2 ${
-                        product.stock > 0
-                          ? "text-green-600"
-                          : "text-red-600"
+                        product.stock > 0 ? "text-green-600" : "text-red-600"
                       }`}
                     >
                       {product.stock > 0 ? "In Stock" : "Out of Stock"}
@@ -108,10 +127,15 @@ const FeaturedProducts = () => {
                       ₹{Number(product.price).toFixed(2)}
                     </p>
 
+                    {/* Actions */}
                     <div className="mt-auto flex gap-2">
-                      <button className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+                      <button
+                        onClick={(e) => handleAddToCart(e, product.id)}
+                        className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                      >
                         Add to Cart
                       </button>
+
                       <button className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
                         Buy Now
                       </button>

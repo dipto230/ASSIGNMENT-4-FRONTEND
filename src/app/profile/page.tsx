@@ -1,39 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-
-const getUserFromStorage = () => {
-  if (typeof window === "undefined") return null;
-  const user = localStorage.getItem("user");
-  return user ? JSON.parse(user) : null;
-};
+import { useSession } from "@/hooks/useSession";
 
 export default function ProfilePage() {
-  const [user, setUser] = useState<any>(null);
+  const { user, loading } = useSession(); // ✅ use 'user', not 'session'
 
-  useEffect(() => {
-    const storedData = getUserFromStorage();
-
-    if (storedData && storedData.user) {
-    
-      const userObj = storedData.user;
-
-    
-      if (!userObj.role) userObj.role = "User";
-
-      setUser(userObj);
-    } else {
-     
-      setUser({
-        name: "Test User",
-        email: "test@example.com",
-        role: "User",
-        createdAt: new Date().toISOString(),
-        image: null
-      });
-    }
-  }, []);
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <p className="text-gray-600 text-xl">Loading...</p>
+      </div>
+    );
+  }
 
   if (!user) {
     return (
@@ -60,7 +38,6 @@ export default function ProfilePage() {
         <h1 className="text-3xl font-bold mb-6 text-teal-600">My Profile</h1>
 
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-         
           {user.image ? (
             <img
               src={user.image}
@@ -73,7 +50,6 @@ export default function ProfilePage() {
             </div>
           )}
 
-        
           <div className="flex-1 space-y-2">
             <p className="text-gray-600">
               <span className="font-semibold text-gray-800">Name:</span> {user.name || "N/A"}
@@ -91,7 +67,6 @@ export default function ProfilePage() {
           </div>
         </div>
 
-       
         <div className="mt-8 flex justify-center gap-4">
           <a
             href="/"

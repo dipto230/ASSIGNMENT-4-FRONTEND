@@ -6,13 +6,7 @@ import { useRouter } from "next/navigation";
 export default function RegisterPage() {
   const router = useRouter();
 
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-    role: "", // CUSTOMER or SELLER
-  });
-
+  const [form, setForm] = useState({ name: "", email: "", password: "", role: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,10 +24,9 @@ export default function RegisterPage() {
     }
 
     setLoading(true);
-    setError(null);
 
     try {
-      
+      // 1️⃣ Register
       const res = await fetch("http://localhost:5000/api/auth/sign-up/email", {
         method: "POST",
         credentials: "include",
@@ -48,12 +41,12 @@ export default function RegisterPage() {
 
       if (!res.ok) {
         const data = await res.json().catch(() => null);
-        setError(data?.message || "Registration failed");
+        setError(data?.message || data?.error || "Registration failed");
         setLoading(false);
         return;
       }
 
-      
+      // 2️⃣ Auto-login
       const loginRes = await fetch("http://localhost:5000/api/auth/sign-in/email", {
         method: "POST",
         credentials: "include",
@@ -67,13 +60,15 @@ export default function RegisterPage() {
         return;
       }
 
-      const userData = await loginRes.json();
-      localStorage.setItem("user", JSON.stringify(userData));
-
-
+      // ✅ Trigger session refresh globally
       window.dispatchEvent(new Event("userChanged"));
 
-      router.replace("/"); 
+      // 3️⃣ Role-based redirect
+      const userData = await loginRes.json();
+      if (userData.user.role === "SELLER") router.replace("/seller/dashboard");
+      else if (userData.user.role === "ADMIN") router.replace("/admin/dashboard");
+      else router.replace("/");
+
     } catch (err) {
       console.error(err);
       setError("Something went wrong. Please try again.");
@@ -84,67 +79,36 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex bg-white text-black">
-      {/* LEFT SIDE - Form */}
       <div className="w-full md:w-1/2 flex items-center justify-center px-8">
         <form onSubmit={handleSubmit} className="w-full max-w-md space-y-5">
           <h2 className="text-3xl font-bold mb-4">Create Account</h2>
-
           {error && <p className="text-red-600">{error}</p>}
 
-          <input
-            name="name"
-            placeholder="Full Name"
-            value={form.name}
-            onChange={handleChange}
-            className="w-full p-3 border rounded focus:outline-none focus:border-teal-500"
-          />
+          <input name="name" placeholder="Full Name" value={form.name} onChange={handleChange}
+            className="w-full p-3 border rounded focus:outline-none focus:border-teal-500" />
 
-          <input
-            name="email"
-            type="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            className="w-full p-3 border rounded focus:outline-none focus:border-teal-500"
-          />
+          <input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange}
+            className="w-full p-3 border rounded focus:outline-none focus:border-teal-500" />
 
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            className="w-full p-3 border rounded focus:outline-none focus:border-teal-500"
-          />
+          <input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange}
+            className="w-full p-3 border rounded focus:outline-none focus:border-teal-500" />
 
-          <select
-            name="role"
-            value={form.role}
-            onChange={handleChange}
-            className="w-full p-3 border rounded focus:outline-none focus:border-teal-500"
-          >
+          <select name="role" value={form.role} onChange={handleChange}
+            className="w-full p-3 border rounded focus:outline-none focus:border-teal-500">
             <option value="">Select Role</option>
             <option value="CUSTOMER">Customer</option>
             <option value="SELLER">Seller</option>
           </select>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-teal-600 hover:bg-teal-700 p-3 rounded font-semibold text-white transition disabled:opacity-50"
-          >
+          <button type="submit" disabled={loading}
+            className="w-full bg-teal-600 hover:bg-teal-700 p-3 rounded font-semibold text-white transition disabled:opacity-50">
             {loading ? "Creating account..." : "Register"}
           </button>
         </form>
       </div>
 
-  
       <div className="hidden md:block md:w-1/2">
-        <img
-          src="/Medical.jpg"
-          alt="Medical"
-          className="h-full w-full object-cover"
-        />
+        <img src="/Medical.jpg" alt="Medical" className="h-full w-full object-cover" />
       </div>
     </div>
   );

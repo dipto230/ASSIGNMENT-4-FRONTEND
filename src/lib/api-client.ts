@@ -31,3 +31,74 @@ export async function getProducts() {
 
 
 
+
+// ➕ Add to Cart
+export async function addToCart(medicineId: string, quantity = 1) {
+  const res = await fetch(`${API_BASE}/api/customer/cart`, {
+    method: "POST",
+    credentials: "include", // 🔥 important for Better Auth session
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ medicineId, quantity }),
+  });
+
+  if (!res.ok) throw new Error("Failed to add to cart");
+  return res.json();
+}
+
+// 🛒 Get Cart
+export async function getCart() {
+  const res = await fetch(`${API_BASE}/api/customer/cart`, {
+    credentials: "include",
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch cart");
+  return res.json();
+}
+
+// 🔄 Update Quantity
+export async function updateCartItem(id: string, quantity: number) {
+  const res = await fetch(`${API_BASE}/api/customer/cart/${id}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ quantity }),
+  });
+
+  if (!res.ok) throw new Error("Failed to update cart item");
+}
+
+// ❌ Remove Item
+export async function removeCartItem(id: string) {
+  const res = await fetch(`${API_BASE}/api/customer/cart/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!res.ok) throw new Error("Failed to remove cart item");
+}
+
+/* ================= ORDER ================= */
+
+export async function placeOrder(shipping: {
+  name: string;
+  phone: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  country: string;
+}) {
+  const res = await fetch(`${API_BASE}/api/customer/orders`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      shipping,
+      paymentMethod: "COD",
+    }),
+  });
+
+  if (!res.ok) throw new Error("Order failed");
+  return res.json();
+}
+
+

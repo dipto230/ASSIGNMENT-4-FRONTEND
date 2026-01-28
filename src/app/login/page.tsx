@@ -15,7 +15,6 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      // 1️⃣ Sign in
       const res = await fetch("http://localhost:5000/api/auth/sign-in/email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -25,18 +24,21 @@ export default function LoginPage() {
 
       if (!res.ok) {
         const data = await res.json().catch(() => null);
-        setError(data?.message || "Invalid email or password");
+        setError(data?.message || data?.error || "Invalid email or password");
         setLoading(false);
         return;
       }
 
-      const userData = await res.json();
-      localStorage.setItem("user", JSON.stringify(userData));
-
-      // Trigger Navbar update
+      // ✅ Refresh session
       window.dispatchEvent(new Event("userChanged"));
 
-      router.replace("/"); // Redirect to home
+      const userData = await res.json();
+
+      // Role-based redirect
+      if (userData.user.role === "SELLER") router.replace("/seller/dashboard");
+      else if (userData.user.role === "ADMIN") router.replace("/admin/dashboard");
+      else router.replace("/");
+
     } catch (err) {
       console.error(err);
       setError("Something went wrong. Please try again.");
@@ -47,50 +49,28 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex bg-white text-black">
-      {/* LEFT SIDE - Form */}
       <div className="w-full md:w-1/2 flex items-center justify-center px-8">
         <form onSubmit={handleLogin} className="w-full max-w-md space-y-5">
           <h2 className="text-3xl font-bold mb-4">Login to Your Account</h2>
-
           {error && <p className="text-red-600">{error}</p>}
 
-          <input
-            name="email"
-            type="email"
-            placeholder="Email"
-            value={form.email}
+          <input name="email" type="email" placeholder="Email" value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="w-full p-3 border rounded focus:outline-none focus:border-teal-500"
-            required
-          />
+            className="w-full p-3 border rounded focus:outline-none focus:border-teal-500" required />
 
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={form.password}
+          <input name="password" type="password" placeholder="Password" value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
-            className="w-full p-3 border rounded focus:outline-none focus:border-teal-500"
-            required
-          />
+            className="w-full p-3 border rounded focus:outline-none focus:border-teal-500" required />
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-teal-600 hover:bg-teal-700 p-3 rounded font-semibold text-white transition disabled:opacity-50"
-          >
+          <button type="submit" disabled={loading}
+            className="w-full bg-teal-600 hover:bg-teal-700 p-3 rounded font-semibold text-white transition disabled:opacity-50">
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
       </div>
 
-    
       <div className="hidden md:block md:w-1/2">
-        <img
-          src="/surgeon.jpg"
-          alt="Medical"
-          className="h-full w-full object-cover"
-        />
+        <img src="/surgeon.jpg" alt="Medical" className="h-full w-full object-cover" />
       </div>
     </div>
   );
