@@ -5,7 +5,7 @@ import { Search, User, ShoppingCart, HeartPulse } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-// Function to get user from localStorage
+// Get user from localStorage
 const getUserFromStorage = () => {
   if (typeof window === "undefined") return null;
   const user = localStorage.getItem("user");
@@ -35,7 +35,17 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    setUser(getUserFromStorage());
+    const updateUser = () => setUser(getUserFromStorage());
+
+    // Run once on mount
+    updateUser();
+
+    // Listen for custom event from registration/login
+    window.addEventListener("userChanged", updateUser);
+
+    return () => {
+      window.removeEventListener("userChanged", updateUser);
+    };
   }, []);
 
   return (

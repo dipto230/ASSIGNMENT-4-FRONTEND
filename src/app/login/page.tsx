@@ -6,11 +6,13 @@ import { useRouter } from "next/navigation";
 export default function LoginPage() {
   const router = useRouter();
   const [form, setForm] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
       // 1️⃣ Sign in
@@ -22,69 +24,74 @@ export default function LoginPage() {
       });
 
       if (!res.ok) {
-        const data = await res.json();
+        const data = await res.json().catch(() => null);
         setError(data?.message || "Invalid email or password");
+        setLoading(false);
         return;
       }
 
-      // 2️⃣ Get session info
-      const sessionRes = await fetch("http://localhost:5000/api/auth/session", {
-        method: "GET",
-        credentials: "include",
-      });
+      const userData = await res.json();
+      localStorage.setItem("user", JSON.stringify(userData));
 
-      if (!sessionRes.ok) {
-        setError("Failed to fetch session info");
-        return;
-      }
+      // Trigger Navbar update
+      window.dispatchEvent(new Event("userChanged"));
 
-      const session = await sessionRes.json();
-
-      if (!session.user) {
-        setError("User not found in session");
-        return;
-      }
-
-      // 3️⃣ Redirect after login
-      router.push("/"); // Go to home page
+      router.replace("/"); // Redirect to home
     } catch (err) {
       console.error(err);
       setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-20 p-6 shadow rounded bg-gray-50">
-      <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
+    <div className="min-h-screen flex bg-white text-black">
+      {/* LEFT SIDE - Form */}
+      <div className="w-full md:w-1/2 flex items-center justify-center px-8">
+        <form onSubmit={handleLogin} className="w-full max-w-md space-y-5">
+          <h2 className="text-3xl font-bold mb-4">Login to Your Account</h2>
 
-      <form onSubmit={handleLogin} className="space-y-4">
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full border p-2 rounded bg-white focus:ring-2 focus:ring-teal-500 focus:outline-none"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-          required
+          {error && <p className="text-red-600">{error}</p>}
+
+          <input
+            name="email"
+            type="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            className="w-full p-3 border rounded focus:outline-none focus:border-teal-500"
+            required
+          />
+
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            className="w-full p-3 border rounded focus:outline-none focus:border-teal-500"
+            required
+          />
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-teal-600 hover:bg-teal-700 p-3 rounded font-semibold text-white transition disabled:opacity-50"
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
+        </form>
+      </div>
+
+      {/* RIGHT SIDE - Image */}
+      <div className="hidden md:block md:w-1/2">
+        <img
+          src="/surgeon.jpg"
+          alt="Medical"
+          className="h-full w-full object-cover"
         />
-
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full border p-2 rounded bg-white focus:ring-2 focus:ring-teal-500 focus:outline-none"
-          value={form.password}
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-          required
-        />
-
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-
-        <button
-          type="submit"
-          className="w-full bg-teal-600 text-white p-2 rounded hover:bg-teal-700 transition"
-        >
-          Login
-        </button>
-      </form>
+      </div>
     </div>
   );
 }

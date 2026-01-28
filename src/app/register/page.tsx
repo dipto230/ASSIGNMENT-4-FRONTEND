@@ -33,7 +33,7 @@ export default function RegisterPage() {
     setError(null);
 
     try {
-      // Register user
+      // 1️⃣ Register user
       const res = await fetch("http://localhost:5000/api/auth/sign-up/email", {
         method: "POST",
         credentials: "include",
@@ -53,7 +53,7 @@ export default function RegisterPage() {
         return;
       }
 
-      // Auto-login
+      // 2️⃣ Auto-login
       const loginRes = await fetch("http://localhost:5000/api/auth/sign-in/email", {
         method: "POST",
         credentials: "include",
@@ -68,10 +68,12 @@ export default function RegisterPage() {
       }
 
       const userData = await loginRes.json();
-      localStorage.setItem("user", JSON.stringify(userData)); // <-- Save user in localStorage
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      // 👇 Trigger Navbar update
+      window.dispatchEvent(new Event("userChanged"));
 
       router.replace("/"); // Redirect to home
-
     } catch (err) {
       console.error(err);
       setError("Something went wrong. Please try again.");
