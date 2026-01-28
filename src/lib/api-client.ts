@@ -149,3 +149,130 @@ export async function addMedicine(data: {
   return res.json();
 }
 
+
+
+
+
+
+
+
+
+
+export async function getSellerOrders() {
+  const res = await fetch(`${API_BASE}/api/seller/orders`, {
+    credentials: "include",
+    cache: "no-store",
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch seller orders");
+  return res.json();
+}
+
+
+
+export async function updateSellerOrderStatus(
+  itemId: string,
+  status: "PROCESSING" | "SHIPPED" | "DELIVERED"
+) {
+  const res = await fetch(`${API_BASE}/api/seller/orders/${itemId}/status`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status }),
+  });
+
+  if (!res.ok) throw new Error("Failed to update order status");
+  return res.json();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ================= ADMIN =================
+
+export async function getAdminOrders() {
+  const res = await fetch(`${API_BASE}/api/admin/orders`, {
+    credentials: "include",
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error("Failed to fetch orders");
+  return res.json();
+}
+
+export async function getAdminUsers() {
+  const res = await fetch(`${API_BASE}/api/admin/users`, {
+    credentials: "include",
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error("Failed to fetch users");
+  return res.json();
+}
+
+export async function updateUserStatus(userId: string, status: "ACTIVE" | "BANNED") {
+  const res = await fetch(`${API_BASE}/api/admin/users/${userId}/status`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status }),
+  });
+  if (!res.ok) throw new Error("Failed to update user");
+}
+
+export async function getAdminCategories() {
+  const res = await fetch(`${API_BASE}/api/admin/categories`, {
+    credentials: "include",
+  });
+  return res.json();
+}
+
+export async function createCategory(name: string) {
+  const res = await fetch(`${API_BASE}/api/admin/categories`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name }),
+  });
+  return res.json();
+}
+
+export async function approveMedicine(id: string) {
+  const res = await fetch(`${API_BASE}/api/admin/medicines/${id}/status`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status: "APPROVE" }),
+  });
+  return res.json();
+}
+
+export async function toggleMedicineAvailability(id: string, status: "AVAILABLE" | "UNAVAILABLE") {
+  const res = await fetch(`${API_BASE}/api/admin/medicines/${id}/availability`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status }),
+  });
+  return res.json();
+}
