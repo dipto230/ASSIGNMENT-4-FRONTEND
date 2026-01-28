@@ -1,4 +1,4 @@
-// hooks/useSession.ts
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -38,7 +38,7 @@ export const useSession = () => {
   useEffect(() => {
     fetchSession();
 
-    // Update session when login/register happens
+    
     const handler = () => fetchSession();
     window.addEventListener("userChanged", handler);
     return () => window.removeEventListener("userChanged", handler);

@@ -125,3 +125,27 @@ export async function getOrderById(orderId: string) {
   return res.json();
 }
 
+
+
+
+
+export async function addMedicine(data: {
+  name: string;
+  description: string;
+  manufacturer: string;
+  price: number;
+  stock: number;
+  categoryId: string;
+  image: string;
+}) {
+  const res = await fetch(`${API_BASE}/api/seller/medicines`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) throw new Error("Failed to add medicine");
+  return res.json();
+}
+
