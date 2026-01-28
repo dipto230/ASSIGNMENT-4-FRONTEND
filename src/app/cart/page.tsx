@@ -1,15 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  getCart,
-  removeCartItem,
-  updateCartItem,
-  placeOrder,
-} from "@/lib/api-client";
+import { getCart, removeCartItem, updateCartItem } from "@/lib/api-client";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
   const [items, setItems] = useState<any[]>([]);
+  const router = useRouter();
 
   const loadCart = () => getCart().then(setItems);
 
@@ -21,21 +18,6 @@ export default function CartPage() {
     (sum, i) => sum + Number(i.medicine.price) * i.quantity,
     0
   );
-
-  const checkout = async () => {
-    const shipping = {
-      name: "Test User",
-      phone: "9999999999",
-      address: "Street 1",
-      city: "City",
-      postalCode: "123456",
-      country: "India",
-    };
-
-    await placeOrder(shipping);
-    alert("Order placed 🎉");
-    loadCart();
-  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-20 px-6">
@@ -53,14 +35,11 @@ export default function CartPage() {
             key={item.id}
             className="flex justify-between items-start border-b border-gray-200 py-6"
           >
-            {/* Left */}
             <div>
               <h2 className="text-lg font-semibold text-gray-900">
                 {item.medicine.name}
               </h2>
-              <p className="text-gray-500 mt-1">
-                ₹{item.medicine.price}
-              </p>
+              <p className="text-gray-500 mt-1">₹{item.medicine.price}</p>
 
               <div className="flex items-center gap-3 mt-4">
                 <button
@@ -87,7 +66,6 @@ export default function CartPage() {
               </div>
             </div>
 
-            {/* Right */}
             <div className="text-right">
               <p className="text-lg font-semibold text-gray-900">
                 ₹{Number(item.medicine.price) * item.quantity}
@@ -111,10 +89,10 @@ export default function CartPage() {
               </h2>
 
               <button
-                onClick={checkout}
+                onClick={() => router.push("/checkout")}
                 className="bg-green-600 hover:bg-green-700 transition text-white px-10 py-3 rounded-lg font-semibold"
               >
-                Checkout
+                Proceed to Checkout
               </button>
             </div>
           </div>
