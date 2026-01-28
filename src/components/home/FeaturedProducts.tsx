@@ -3,11 +3,14 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { getProducts, addToCart } from "@/lib/api-client";
 import { useSession } from "@/hooks/useSession";
 
 const FeaturedProducts = () => {
-  const { user, loading: sessionLoading } = useSession(); // Get current user
+  const router = useRouter();
+  const { user } = useSession();
+
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,7 +19,7 @@ const FeaturedProducts = () => {
       try {
         const data = await getProducts();
 
-        // Only show approved and active products
+        // Only approved + active products
         const activeProducts = data.filter(
           (p: any) => p.isApproved && p.isActive
         );
@@ -32,21 +35,24 @@ const FeaturedProducts = () => {
     fetchProducts();
   }, []);
 
-  if (loading)
-    return (
-      <section className="py-16">
-        <p className="text-center text-gray-500">Loading products...</p>
-      </section>
-    );
-
   const featured = products.slice(0, 4);
 
-  // Add to cart handler
-  const handleAddToCart = async (e: React.MouseEvent, id: string) => {
+  // ✅ Add to Cart
+  const handleAddToCart = async (
+    e: React.MouseEvent,
+    id: string,
+    stock: number
+  ) => {
     e.preventDefault();
+    e.stopPropagation();
 
     if (!user) {
       alert("Please login first to add products to cart");
+      return;
+    }
+
+    if (stock <= 0) {
+      alert("This product is out of stock");
       return;
     }
 
@@ -58,6 +64,41 @@ const FeaturedProducts = () => {
       alert("Failed to add to cart");
     }
   };
+
+  // ✅ Buy Now
+  const handleBuyNow = async (
+    e: React.MouseEvent,
+    id: string,
+    stock: number
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!user) {
+      alert("Please login first to buy products");
+      return;
+    }
+
+    if (stock <= 0) {
+      alert("This product is out of stock");
+      return;
+    }
+
+    try {
+      await addToCart(id); // keep checkout flow consistent
+      router.push("/checkout");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to proceed to checkout");
+    }
+  };
+
+  if (loading)
+    return (
+      <section className="py-16">
+        <p className="text-center text-gray-500">Loading products...</p>
+      </section>
+    );
 
   return (
     <section className="w-full bg-gray-50 py-20">
@@ -88,7 +129,7 @@ const FeaturedProducts = () => {
             return (
               <Link href={`/shop/${product.id}`} key={product.id}>
                 <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden cursor-pointer">
-                  {/* Product Image */}
+                  {/* Image */}
                   <div className="relative h-48 bg-gray-100 flex items-center justify-center">
                     <Image
                       src={imageSrc}
@@ -99,7 +140,7 @@ const FeaturedProducts = () => {
                     />
                   </div>
 
-                  {/* Product Details */}
+                  {/* Details */}
                   <div className="p-4 flex flex-col flex-1">
                     <h3 className="text-lg font-semibold text-gray-900 mb-1 line-clamp-1">
                       {product.name}
@@ -117,7 +158,9 @@ const FeaturedProducts = () => {
 
                     <p
                       className={`text-sm mb-2 ${
-                        product.stock > 0 ? "text-green-600" : "text-red-600"
+                        product.stock > 0
+                          ? "text-green-600"
+                          : "text-red-600"
                       }`}
                     >
                       {product.stock > 0 ? "In Stock" : "Out of Stock"}
@@ -127,16 +170,23 @@ const FeaturedProducts = () => {
                       ₹{Number(product.price).toFixed(2)}
                     </p>
 
-                    {/* Actions */}
+                    {/* Buttons */}
                     <div className="mt-auto flex gap-2">
                       <button
-                        onClick={(e) => handleAddToCart(e, product.id)}
+                        onClick={(e) =>
+                          handleAddToCart(e, product.id, product.stock)
+                        }
                         className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
                       >
                         Add to Cart
                       </button>
 
-                      <button className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
+                      <button
+                        onClick={(e) =>
+                          handleBuyNow(e, product.id, product.stock)
+                        }
+                        className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition"
+                      >
                         Buy Now
                       </button>
                     </div>
