@@ -4,6 +4,7 @@ import "./globals.css";
 import { usePathname } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import SellerNavbar from "@/components/SellerNavbar";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function RootLayout({
   children,
@@ -13,19 +14,22 @@ export default function RootLayout({
   const pathname = usePathname();
 
   const isSellerRoute = pathname.startsWith("/seller");
-
-  // Auth pages where navbar should be hidden
-  const isAuthPage =
-    pathname === "/login" || pathname === "/register";
+  const isAdminRoute = pathname.startsWith("/admin"); // check for admin route
+  const isAuthPage = pathname === "/login" || pathname === "/register";
 
   return (
     <html lang="en">
       <body>
-        {/* NAVBAR CONTROL */}
         {!isAuthPage &&
-          (isSellerRoute ? <SellerNavbar /> : <Navbar />)}
+          (isAdminRoute ? (
+            <AdminLayout>{children}</AdminLayout> // wrap admin pages with AdminLayout
+          ) : isSellerRoute ? (
+            <SellerNavbar />
+          ) : (
+            <Navbar />
+          ))}
 
-        {children}
+        {isAuthPage && children}
       </body>
     </html>
   );
