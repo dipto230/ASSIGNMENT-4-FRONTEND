@@ -85,9 +85,7 @@ export default function Navbar() {
           <Link href="/" className="hover:text-teal-600 transition">Home</Link>
           <Link href="/about" className="hover:text-teal-600 transition">About</Link>
           <Link href="/shop" className="hover:text-teal-600 transition">Shop</Link>
-          <Link href="#" className="hover:text-teal-600 transition">News</Link>
-          <Link href="#" className="hover:text-teal-600 transition">Pages</Link>
-          <Link href="#" className="hover:text-teal-600 transition">Contact</Link>
+          <Link href="/contact" className="hover:text-teal-600 transition">Contact</Link>
         </nav>
 
         
