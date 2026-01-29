@@ -4,6 +4,8 @@ import "./globals.css";
 import { usePathname } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import SellerNavbar from "@/components/SellerNavbar";
+import Footer from "@/components/layout/Footer";
+import BrandLogos from "@/components/home/BrandLogos";
 
 export default function RootLayout({
   children,
@@ -26,6 +28,8 @@ export default function RootLayout({
         )}
 
         {children}
+        <BrandLogos/>
+        <Footer/>
       </body>
     </html>
   );

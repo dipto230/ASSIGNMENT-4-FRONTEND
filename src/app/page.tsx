@@ -3,6 +3,7 @@ import FeaturedProducts from "@/components/home/FeaturedProducts";
 import Hero from "@/components/home/Hero";
 import HomeFeatures from "@/components/home/HomeFeatures";
 import MedicalGoods from "@/components/home/MedicalGoods";
+import StaticBlogSection from "@/components/home/StaticBlogSection";
 import VaccineOfferSection from "@/components/home/VaccineOfferSection";
 
 
@@ -14,7 +15,8 @@ export default function Home() {
       <MedicalGoods />
       <FeaturedProducts />
       <VaccineOfferSection />
-      <HomeFeatures/>
+      <HomeFeatures />
+      <StaticBlogSection/>
     </main>
   );
 }
