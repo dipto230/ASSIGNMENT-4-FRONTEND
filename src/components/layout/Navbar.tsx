@@ -13,7 +13,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
 
-  // Load cart count
+  
   const loadCartCount = async () => {
     if (!user) {
       setCartCount(0);
@@ -30,7 +30,7 @@ export default function Navbar() {
   useEffect(() => {
     loadCartCount();
 
-    // Listen for global cart updates
+    
     const handler = () => loadCartCount();
     window.addEventListener("cartUpdated", handler);
     return () => window.removeEventListener("cartUpdated", handler);
@@ -47,13 +47,13 @@ export default function Navbar() {
     } catch (err) {
       console.error("Logout error:", err);
     } finally {
-      setUser(null); // clear local state immediately
+      setUser(null); 
     }
   };
 
   return (
     <header className="w-full bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
-      {/* TOP BAR */}
+      
       <div className="bg-gray-50 text-sm text-gray-600">
         <div className="max-w-7xl mx-auto px-6 py-2 flex justify-between items-center">
           <div className="flex gap-6">
@@ -71,7 +71,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* MAIN NAV */}
+      
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link
           href="/"
@@ -83,18 +83,18 @@ export default function Navbar() {
 
         <nav className="hidden md:flex gap-8 font-medium text-gray-700">
           <Link href="/" className="hover:text-teal-600 transition">Home</Link>
-          <Link href="#" className="hover:text-teal-600 transition">About</Link>
+          <Link href="/about" className="hover:text-teal-600 transition">About</Link>
           <Link href="/shop" className="hover:text-teal-600 transition">Shop</Link>
           <Link href="#" className="hover:text-teal-600 transition">News</Link>
           <Link href="#" className="hover:text-teal-600 transition">Pages</Link>
           <Link href="#" className="hover:text-teal-600 transition">Contact</Link>
         </nav>
 
-        {/* USER & CART */}
+        
         <div className="flex items-center gap-6 text-gray-700 relative">
           <Search className="cursor-pointer hover:text-teal-600 transition" />
 
-          {/* USER ICON */}
+          
           <div
             className="cursor-pointer hover:text-teal-600 transition relative"
             onClick={() => setOpen(!open)}
@@ -120,7 +120,7 @@ export default function Navbar() {
 
                 {user && (
                   <>
-                    {/* Profile Info */}
+                
                     <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-200">
                       {user.image ? (
                         <img src={user.image} className="w-8 h-8 rounded-full" alt="avatar" />
@@ -133,7 +133,7 @@ export default function Navbar() {
                       </div>
                     </div>
 
-                    {/* Links */}
+                    
                     <Link href="/profile" className="block px-3 py-2 hover:bg-gray-100 rounded">
                       My Profile
                     </Link>
@@ -141,7 +141,7 @@ export default function Navbar() {
                       My Orders
                     </Link>
 
-                    {/* Logout */}
+                    
                     <button
                       onClick={handleLogout}
                       className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-red-500"
@@ -154,7 +154,7 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* CART ICON */}
+          
           <Link href="/cart" className="relative cursor-pointer hover:text-teal-600 transition">
             <ShoppingCart />
             {cartCount > 0 && (
