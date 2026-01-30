@@ -210,7 +210,7 @@ export async function updateSellerOrderStatus(
 
 
 
-// ================= ADMIN =================
+
 
 export async function getAdminOrders() {
   const res = await fetch(`${API_BASE}/api/admin/orders`, {
@@ -276,3 +276,7 @@ export async function toggleMedicineAvailability(id: string, status: "AVAILABLE"
   });
   return res.json();
 }
+
+
+
+
