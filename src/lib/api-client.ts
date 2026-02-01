@@ -1,13 +1,15 @@
 
 
 const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL ??
+  process.env.NEXT_PUBLIC_API_URL ||
   "https://medistore-assignment-70.vercel.app";
+
 
 
 export async function getCategories() {
   const res = await fetch(`${API_BASE}/api/categories`, {
     cache: "no-store",
+    next: { revalidate: 0 },
   });
 
   if (!res.ok) {
@@ -21,6 +23,7 @@ export async function getCategories() {
 export async function getProducts() {
   const res = await fetch(`${API_BASE}/api/medicines`, {
     cache: "no-store",
+    next: { revalidate: 0 },
   });
 
   if (!res.ok) {

@@ -5,9 +5,9 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const slides = [
-  "/hero/hero1.jpg",
-  "/hero/hero2.jpg",
-  "/hero/hero3.jpg",
+  "/Hero/hero1.jpg",
+  "/Hero/hero2.jpg",
+  "/Hero/hero3.jpg",
 ];
 
 export default function Hero() {
