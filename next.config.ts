@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -14,9 +16,18 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "i.ibb.co",  
+        hostname: "i.ibb.co",
       },
     ],
+  },
+
+  async rewrites() {
+    return [
+      {
+        source: "/api/auth/:path*",
+        destination: `${API_URL}/api/auth/:path*`,
+      },
+    ];
   },
 };
 

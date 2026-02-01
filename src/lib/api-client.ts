@@ -1,6 +1,9 @@
 
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL;
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_URL ??
+  "https://medistore-assignment-70.vercel.app";
+
 
 export async function getCategories() {
   const res = await fetch(`${API_BASE}/api/categories`, {
@@ -258,7 +261,7 @@ export async function createCategory(name: string) {
 }
 
 export async function approveMedicine(id: string) {
-  const res = await fetch(`${API_BASE}/api/admin/medicines/${id}/status`, {
+  const res = await fetch(`${API_BASE}/api/admin/medicines/${id}/approve`, {
     method: "PATCH",
     credentials: "include",
     headers: { "Content-Type": "application/json" },

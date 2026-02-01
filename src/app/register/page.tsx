@@ -27,7 +27,7 @@ export default function RegisterPage() {
 
     try {
       // 1️⃣ Register
-      const res = await fetch("http://localhost:5000/api/auth/sign-up/email", {
+      const res = await fetch("/api/auth/sign-up/email", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -47,7 +47,7 @@ export default function RegisterPage() {
       }
 
       // 2️⃣ Auto-login
-      const loginRes = await fetch("http://localhost:5000/api/auth/sign-in/email", {
+      const loginRes = await fetch("/api/auth/sign-in/email", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

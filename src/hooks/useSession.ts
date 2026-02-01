@@ -18,7 +18,7 @@ export const useSession = () => {
   const fetchSession = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/auth/session", {
+      const res = await fetch("/api/auth/session", {
         credentials: "include",
       });
       if (!res.ok) {
