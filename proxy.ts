@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Allow public routes
+  // Public paths
   if (
     pathname.startsWith("/api/auth") ||
     pathname.startsWith("/api/public") ||
