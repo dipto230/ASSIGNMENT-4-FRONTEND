@@ -4,7 +4,7 @@
 
 const API_BASE =
   process.env.NEXT_PUBLIC_API_URL ||
-  "https://medistore-assignment-70.vercel.app";
+  "https://redeploy-medistore.vercel.app";
 
 
 

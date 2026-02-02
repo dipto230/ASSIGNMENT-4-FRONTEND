@@ -60,7 +60,7 @@ export default function RegisterPage() {
 
       // 2️⃣ IMPORTANT: fetch session AFTER cookie is set
       const sessionRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/session`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/get-session`,
         {
           credentials: "include",
         }

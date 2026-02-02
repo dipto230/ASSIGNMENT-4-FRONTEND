@@ -18,7 +18,7 @@ export const useSession = () => {
   const fetchSession = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/session`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/get-session`, {
         credentials: "include",
       });
       if (!res.ok) {
