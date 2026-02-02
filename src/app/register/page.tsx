@@ -76,12 +76,24 @@ export default function RegisterPage() {
       // 3️⃣ Notify app
       window.dispatchEvent(new Event("userChanged"));
 
-      // 4️⃣ Role-based redirect (TRUST SESSION ONLY)
-      const role = session.user?.role;
+      
+    // 4️⃣ Role-based redirect (TRUST SESSION ONLY)
+const role =
+  session.user?.role ||
+  session.user?.additionalFields?.role ||
+  session.user?.metadata?.role ||
+  session.user?.publicMetadata?.role;
 
-      if (role === "SELLER") router.replace("/seller/dashboard");
-      else if (role === "ADMIN") router.replace("/admin/dashboard");
-      else router.replace("/");
+const normalizedRole = role?.toUpperCase();
+
+if (normalizedRole === "SELLER") {
+  router.replace("/seller/dashboard");
+} else if (normalizedRole === "ADMIN") {
+  router.replace("/admin/dashboard");
+} else {
+  router.replace("/");
+}
+
 
     } catch (err) {
       console.error(err);

@@ -36,20 +36,25 @@ export default function Navbar() {
     return () => window.removeEventListener("cartUpdated", handler);
   }, [user]);
 
-  const handleLogout = async () => {
-    try {
-      await fetch("/api/auth/sign-out", {
-        method: "POST",
-        credentials: "include",
-      });
-      window.dispatchEvent(new Event("userChanged")); // refresh session globally
-      router.replace("/"); // redirect home
-    } catch (err) {
-      console.error("Logout error:", err);
-    } finally {
-      setUser(null); 
-    }
-  };
+const handleLogout = async () => {
+  try {
+    await fetch("https://redeploy-medistore.vercel.app/api/auth/sign-out", {
+      method: "POST",
+      credentials: "include",
+    });
+
+    
+    setUser(null);
+    setCartCount(0);
+    setOpen(false);
+
+    router.refresh();
+    router.replace("/");
+  } catch (err) {
+    console.error("Logout error:", err);
+  }
+};
+
 
   return (
     <header className="w-full bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
