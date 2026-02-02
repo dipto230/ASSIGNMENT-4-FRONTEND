@@ -6,8 +6,14 @@ export function useSession() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/session`, {
-      credentials: "include",
+      headers: { Authorization: `Bearer ${token}` },
     })
       .then(res => res.json())
       .then(data => setUser(data?.user || null))
