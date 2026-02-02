@@ -38,7 +38,10 @@ export default function RegisterPage() {
           name: form.name,
           email: form.email,
           password: form.password,
-          role: form.role.toUpperCase(),
+          //role: form.role.toUpperCase(),
+          additionalFields: {           
+            role: form.role.toUpperCase(),
+          },
         }),
       });
 
@@ -50,7 +53,7 @@ export default function RegisterPage() {
       }
 
       // 2️⃣ Auto-login
-      const loginRes = await fetch( `${process.env.NEXT_PUBLIC_API_URL}/api/auth/sign-up/email`, {
+      const loginRes = await fetch( `${process.env.NEXT_PUBLIC_API_URL}/api/auth/sign-in/email`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
