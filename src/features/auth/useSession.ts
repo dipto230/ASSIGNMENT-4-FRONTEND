@@ -6,17 +6,11 @@ export function useSession() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/session`, {
-      headers: { Authorization: `Bearer ${token}` },
+      credentials: "include", // ✅ SEND COOKIE
     })
-      .then(res => res.json())
-      .then(data => setUser(data?.user || null))
+      .then(res => (res.ok ? res.json() : null))
+      .then(data => setUser(data?.user ?? null))
       .finally(() => setLoading(false));
   }, []);
 
