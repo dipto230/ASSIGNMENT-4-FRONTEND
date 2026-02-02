@@ -1,5 +1,7 @@
 
 
+
+
 const API_BASE =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://medistore-assignment-70.vercel.app";
@@ -42,8 +44,13 @@ export async function getProducts() {
 export async function addToCart(medicineId: string, quantity = 1) {
   const res = await fetch(`${API_BASE}/api/customer/cart`, {
     method: "POST",
-    credentials: "include", // 🔥 important for Better Auth session
-    headers: { "Content-Type": "application/json" },
+    credentials: "include", 
+
+    headers: {
+      "Content-Type": "application/json",
+      
+      
+     },
     body: JSON.stringify({ medicineId, quantity }),
   });
 
@@ -55,6 +62,7 @@ export async function addToCart(medicineId: string, quantity = 1) {
 export async function getCart() {
   const res = await fetch(`${API_BASE}/api/customer/cart`, {
     credentials: "include",
+    
   });
 
   if (!res.ok) throw new Error("Failed to fetch cart");

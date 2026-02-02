@@ -1,3 +1,6 @@
+
+
+
 "use client";
 
 import { useState } from "react";
@@ -47,7 +50,7 @@ export default function RegisterPage() {
       }
 
       // 2️⃣ Auto-login
-      const loginRes = await fetch("/api/auth/sign-in/email", {
+      const loginRes = await fetch( `${process.env.NEXT_PUBLIC_API_URL}/api/auth/sign-up/email`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
