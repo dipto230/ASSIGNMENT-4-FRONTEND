@@ -30,7 +30,7 @@ export default function RegisterPage() {
 
     try {
       // 1️⃣ Register
-      const res = await fetch("/api/auth/sign-up/email", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/sign-up/email`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
