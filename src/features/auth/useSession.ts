@@ -6,7 +6,7 @@ export function useSession() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/auth/session", {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/session`, {
       credentials: "include",
     })
       .then(res => res.json())
