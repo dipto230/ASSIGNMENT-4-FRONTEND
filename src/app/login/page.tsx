@@ -15,7 +15,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      // 1️⃣ Sign in
+      
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/sign-in/email`,
         {
@@ -32,7 +32,7 @@ export default function LoginPage() {
         return;
       }
 
-      // 2️⃣ IMPORTANT: wait for cookie → then fetch session
+      
       const sessionRes = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/get-session`,
         {
@@ -47,10 +47,10 @@ export default function LoginPage() {
 
       const session = await sessionRes.json();
 
-      // 3️⃣ Notify app
+      
       window.dispatchEvent(new Event("userChanged"));
 
-      // 4️⃣ Role-based redirect (TRUST SESSION ONLY)
+      
       const role = session.user?.role;
 
       if (role === "SELLER") router.replace("/seller/dashboard");

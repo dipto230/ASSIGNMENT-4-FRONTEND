@@ -107,7 +107,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* BOTTOM BAR */}
+     
       <div className="bg-[#1f2630] text-gray-200 mt-12 py-4 px-6 flex flex-col md:flex-row justify-between items-center text-sm">
         <p>All Rights Reserved @ Company 2026</p>
         <div className="flex gap-6 mt-2 md:mt-0">

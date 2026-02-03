@@ -19,7 +19,7 @@ const FeaturedProducts = () => {
       try {
         const data = await getProducts();
 
-        // Only approved + active products
+        
         const activeProducts = data.filter(
           (p: any) => p.isApproved && p.isActive
         );
@@ -37,7 +37,7 @@ const FeaturedProducts = () => {
 
   const featured = products.slice(0, 4);
 
-  // ✅ Add to Cart
+  
   const handleAddToCart = async (
     e: React.MouseEvent,
     id: string,
@@ -58,14 +58,15 @@ const FeaturedProducts = () => {
 
     try {
       await addToCart(id);
-      alert("Added to cart 🛒");
+      //alert("Added to cart 🛒");
+      window.dispatchEvent(new Event("cartUpdated"));
     } catch (err) {
       console.error(err);
       alert("Failed to add to cart");
     }
   };
 
-  // ✅ Buy Now
+  
   const handleBuyNow = async (
     e: React.MouseEvent,
     id: string,
@@ -140,7 +141,7 @@ const FeaturedProducts = () => {
                     />
                   </div>
 
-                  {/* Details */}
+                  
                   <div className="p-4 flex flex-col flex-1">
                     <h3 className="text-lg font-semibold text-gray-900 mb-1 line-clamp-1">
                       {product.name}
@@ -170,7 +171,7 @@ const FeaturedProducts = () => {
                       ₹{Number(product.price).toFixed(2)}
                     </p>
 
-                    {/* Buttons */}
+                    
                     <div className="mt-auto flex gap-2">
                       <button
                         onClick={(e) =>

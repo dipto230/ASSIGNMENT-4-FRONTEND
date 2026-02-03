@@ -18,7 +18,7 @@ export default async function BlogDetails({
     <div className="bg-gray-50 min-h-screen py-16 px-4">
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
         
-        {/* Image */}
+        
         <div className="relative w-full h-80">
           <Image
             src={blog.image}
@@ -28,7 +28,7 @@ export default async function BlogDetails({
           />
         </div>
 
-        {/* Content */}
+        
         <div className="p-10">
           <p className="text-sm text-green-600 font-medium mb-2">
             {blog.category}
@@ -44,7 +44,7 @@ export default async function BlogDetails({
             {blog.content}
           </div>
 
-          {/* Back Button */}
+          
           <Link
             href="/blog"
             className="inline-block mt-10 text-green-600 font-semibold hover:underline"

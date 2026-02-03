@@ -2,18 +2,18 @@
 
 import { useSession } from "@/hooks/useSession";
 
-// Add a type that includes createdAt
+
 interface UserWithCreatedAt {
   id: string;
   name: string;
   email: string;
   role?: string;
   image?: string;
-  createdAt: string; // serialized from backend
+  createdAt: string; 
 }
 
 export default function ProfilePage() {
-  // Tell TypeScript that user can be UserWithCreatedAt or null
+  
   const { user, loading } = useSession() as {
     user: UserWithCreatedAt | null;
     loading: boolean;

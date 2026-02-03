@@ -3,13 +3,13 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; // <-- import router
-import { getProducts, addToCart } from "@/lib/api-client"; // <-- import addToCart
-import { useSession } from "@/hooks/useSession"; // <-- import useSession
+import { useRouter } from "next/navigation"; 
+import { getProducts, addToCart } from "@/lib/api-client"; 
+import { useSession } from "@/hooks/useSession"; 
 
 const ShopPage = () => {
   const router = useRouter();
-  const { user } = useSession(); // <-- get current user
+  const { user } = useSession(); 
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -31,7 +31,7 @@ const ShopPage = () => {
     fetchProducts();
   }, []);
 
-  // Add to cart handler
+  
   const handleAddToCart = async (e: React.MouseEvent, id: string) => {
     e.preventDefault();
     if (!user) {
@@ -48,7 +48,7 @@ const ShopPage = () => {
     }
   };
 
-  // Buy now handler
+ 
   const handleBuyNow = async (e: React.MouseEvent, id: string) => {
     e.preventDefault();
     if (!user) {

@@ -19,7 +19,7 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Load cart items for preview
+  
   const loadCart = () => getCart().then(setCartItems);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export default function CheckoutPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-20 px-6">
       <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-sm p-10 flex flex-col md:flex-row gap-10">
-        {/* Left: Form */}
+        
         <div className="flex-1">
           <h1 className="text-3xl font-bold mb-10 text-gray-900">
             Checkout
@@ -147,7 +147,7 @@ export default function CheckoutPage() {
           </form>
         </div>
 
-        {/* Right: Cart Preview */}
+        
         <div className="w-full md:w-1/3 bg-gray-50 rounded-lg p-5 shadow-sm">
           <h2 className="text-2xl font-bold mb-5 text-gray-900">
             Order Summary

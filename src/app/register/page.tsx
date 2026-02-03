@@ -34,7 +34,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      // 1️⃣ Sign up (better-auth will set cookie)
+      
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/sign-up/email`,
         {
@@ -45,9 +45,8 @@ export default function RegisterPage() {
             name: form.name,
             email: form.email,
             password: form.password,
-            additionalFields: {
-              role: form.role.toUpperCase(),
-            },
+             role: form.role.toUpperCase(),
+         
           }),
         }
       );
@@ -58,7 +57,7 @@ export default function RegisterPage() {
         return;
       }
 
-      // 2️⃣ IMPORTANT: fetch session AFTER cookie is set
+      
       const sessionRes = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/get-session`,
         {
@@ -73,11 +72,11 @@ export default function RegisterPage() {
 
       const session = await sessionRes.json();
 
-      // 3️⃣ Notify app
+      
       window.dispatchEvent(new Event("userChanged"));
 
       
-    // 4️⃣ Role-based redirect (TRUST SESSION ONLY)
+    
 const role =
   session.user?.role ||
   session.user?.additionalFields?.role ||

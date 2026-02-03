@@ -11,7 +11,7 @@ export default function SellerDashboard() {
   const [orderItems, setOrderItems] = useState<any[]>([]);
   const [orderLoading, setOrderLoading] = useState(true);
 
-  // Fetch seller medicines
+  
   useEffect(() => {
     fetch(`${API_BASE}/api/seller/medicines`, { credentials: "include" })
       .then((res) => res.json())
@@ -19,7 +19,7 @@ export default function SellerDashboard() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Fetch seller order items
+ 
   useEffect(() => {
     fetch(`${API_BASE}/api/seller/orders`, { credentials: "include" })
       .then((res) => res.json())
@@ -27,7 +27,7 @@ export default function SellerDashboard() {
       .finally(() => setOrderLoading(false));
   }, []);
 
-  // Transform order items into grouped orders
+  
   const orders = orderItems.reduce((acc: any[], item: any) => {
     const existing = acc.find((o) => o.id === item.order.id);
     if (existing) {
@@ -43,7 +43,7 @@ export default function SellerDashboard() {
   const pendingProducts = products.filter((p) => !p.isApproved).length;
   const lowStock = products.filter((p) => p.stock < 20).length;
 
-  // Approve/Reject order item
+  
   const updateOrderStatus = async (orderItemId: string, status: string) => {
     await fetch(`${API_BASE}/api/seller/order-item/${orderItemId}`, {
       method: "PATCH",
@@ -75,7 +75,7 @@ export default function SellerDashboard() {
             <Card title="Low Stock" value={lowStock} red />
           </div>
 
-          {/* Seller Medicines */}
+          
           <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-12">
             <div className="p-6 border-b">
               <h2 className="text-xl font-bold text-gray-900">Your Medicines</h2>
@@ -128,7 +128,7 @@ export default function SellerDashboard() {
             </div>
           </div>
 
-          {/* Seller Orders */}
+          
           <div className="bg-white rounded-xl shadow-sm overflow-hidden mt-12">
             <div className="p-6 border-b">
               <h2 className="text-xl font-bold text-gray-900">Customer Orders</h2>

@@ -31,7 +31,7 @@ export default function OrderDetailsPage() {
           Order Details
         </h1>
 
-        {/* Order Summary */}
+        
         <div className="flex flex-col md:flex-row justify-between mb-8">
           <div>
             <p className="font-semibold">Order ID</p>
@@ -49,7 +49,7 @@ export default function OrderDetailsPage() {
           </div>
         </div>
 
-        {/* Items */}
+        
         <div className="border-t border-gray-200 pt-6 space-y-5">
           {order.items.map((item: any) => (
             <div key={item.id} className="flex justify-between items-center">
@@ -72,7 +72,7 @@ export default function OrderDetailsPage() {
           ))}
         </div>
 
-        {/* Shipping Info */}
+        
         <div className="border-t border-gray-200 mt-8 pt-6 text-gray-700 space-y-1">
           <h2 className="font-semibold text-lg mb-2">Shipping Info</h2>
           <p>{order.shipping.name}</p>
@@ -80,7 +80,7 @@ export default function OrderDetailsPage() {
           <p>{order.shipping.phone}</p>
         </div>
 
-        {/* Payment Info */}
+        
         <div className="border-t border-gray-200 mt-8 pt-6 text-gray-700">
           <h2 className="font-semibold text-lg mb-2">Payment</h2>
           <p>Method: {order.paymentMethod}</p>
