@@ -5,7 +5,6 @@ import Hero from "@/components/home/Hero";
 import HomeFeatures from "@/components/home/HomeFeatures";
 import MedicalGoods from "@/components/home/MedicalGoods";
 import Newsletter from "@/components/home/Newsletter";
-import PricingSection from "@/components/home/PricingSection";
 import StaticBlogSection from "@/components/home/StaticBlogSection";
 import Testimonials from "@/components/home/Testimonials";
 import VaccineOfferSection from "@/components/home/VaccineOfferSection";
@@ -25,7 +24,6 @@ export default function Home() {
       <StaticBlogSection />
       <Newsletter />
       <Testimonials />
-      <PricingSection/>
       <VideoSection/>
     </main>
   );

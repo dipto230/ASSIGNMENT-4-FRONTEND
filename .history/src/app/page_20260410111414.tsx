@@ -5,11 +5,8 @@ import Hero from "@/components/home/Hero";
 import HomeFeatures from "@/components/home/HomeFeatures";
 import MedicalGoods from "@/components/home/MedicalGoods";
 import Newsletter from "@/components/home/Newsletter";
-import PricingSection from "@/components/home/PricingSection";
 import StaticBlogSection from "@/components/home/StaticBlogSection";
-import Testimonials from "@/components/home/Testimonials";
 import VaccineOfferSection from "@/components/home/VaccineOfferSection";
-import VideoSection from "@/components/home/VideoSection";
 
 
 export default function Home() {
@@ -20,13 +17,10 @@ export default function Home() {
       <MedicalGoods />
       <FeaturedProducts />
       <VaccineOfferSection />
-      <DoctorAdvice/>
+      <DoctorAdvice
       <HomeFeatures />
       <StaticBlogSection />
-      <Newsletter />
-      <Testimonials />
-      <PricingSection/>
-      <VideoSection/>
+      <Newsletter/>
     </main>
   );
 }

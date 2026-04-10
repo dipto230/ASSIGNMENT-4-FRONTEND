@@ -91,7 +91,6 @@ const handleLogout = async () => {
           <Link href="/about" className="hover:text-teal-600 transition">About</Link>
           <Link href="/shop" className="hover:text-teal-600 transition">Shop</Link>
           <Link href="/contact" className="hover:text-teal-600 transition">Contact</Link>
-          <Link href="/faq" className="hover:text-teal-600 transition">FAQ</Link>
         </nav>
 
         

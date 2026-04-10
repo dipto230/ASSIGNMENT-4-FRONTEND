@@ -25,7 +25,7 @@ export default function Home() {
       <StaticBlogSection />
       <Newsletter />
       <Testimonials />
-      <PricingSection/>
+      <PricingSection
       <VideoSection/>
     </main>
   );
